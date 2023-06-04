@@ -16,7 +16,6 @@ jobs:
 
       - name: Download deps
         run: npm install
-        working-directory: functions
 
       - name: Deploy
         run: npx firebase-tools deploy --only functions
