@@ -31,6 +31,5 @@ jobs:
       - name: Set Firebase project
         run: firebase use ${{ secrets.FIREBASE_PROJECT_ID }} --alias my-firebase-project --token "$(cat firebase-credentials.json)"
 
-      - name: Deploy to Firebase
-        run: |
-          firebase deploy --project my-firebase-project --token "$(cat firebase-credentials.json)"
+      - name: Deploy Cloud Functions
+        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-credentials.json && npx firebase-tools deploy --only functions --json
