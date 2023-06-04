@@ -26,13 +26,17 @@ jobs:
       run: |
         npm install
 
-    - name: Create JavaScript file
-      run: echo '${{ secrets.FIREBASE_CONFIG }}' > firebaseConfig.js
-      env:
-        FIREBASE_CONFIG: ${{ secrets.FIREBASECONFIG }}
-
-    - name: Show file content
-      run: cat firebaseConfig.js
+    - name: create dotenv
+      run: |
+        touch .env
+        echo "APIKEY=${{ secrets.APIKEY }}" >> .env
+        echo "AUTHDOMAIN=${{ secrets.AUTHDOMAIN }}" >> .env
+        echo "DATABASEURL=${{ secrets.DATABASEURL }}" >> .env
+        echo "PROJECTID=${{ secrets.PROJECTID }}" >> .env
+        echo "STORAGEBUCKET=${{ secrets.STORAGEBUCKET }}" >> .env
+        echo "MESSAGINGSENDERID=${{ secrets.MESSAGINGSENDERID }}" >> .env
+        echo "APPID=${{ secrets.APPID }}" >> .env
+        echo "MEASUREMENTID=${{ secrets.MEASUREMENTID }}" >> .env
 
     # Deploying the functions to firebase
     - name:  Deploy to Firebase
