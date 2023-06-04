@@ -20,7 +20,8 @@
     "firebase-tools": "^12.3.0",
     "global": "^4.4.0",
     "uuid": "^9.0.0",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "dotenv": "^10.0.0"
   },
   "devDependencies": {
     "eslint": "^8.38.0",
