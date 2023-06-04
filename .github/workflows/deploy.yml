@@ -36,19 +36,8 @@ jobs:
           name: 'env.json'
           json: '{"apiKey": "${{ secrets.apiKey }}"}'
 
-      - name: Clear env configs
-        uses: w9jds/firebase-action@master
-        with:
-          args: functions:config:unset env
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Create SA key
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud.json
 
-      - name: Set env configs
-        uses: w9jds/firebase-action@master
-        with:
-          args: functions:config:set env="$(cat env.json)"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
-      - name: Deploy to production
-        run: firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
+      - name: Deploy Cloud Functions
+        run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json && npx firebase-tools deploy --only functions --json
