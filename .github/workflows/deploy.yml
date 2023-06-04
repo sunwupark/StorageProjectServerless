@@ -25,6 +25,11 @@ jobs:
     - name: Install npm packages
       run: |
         npm install
+
+    - name: Save file content as secret
+      run: echo ${{ secrets.FIREBASECONFIG }} | base64 -d > firebaseConfig.js
+
+
     # Deploying the functions to firebase
     - name:  Deploy to Firebase
       uses: w9jds/firebase-action@master
