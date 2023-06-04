@@ -1,58 +1,59 @@
 name: Deploy
 
-# Controls when the workflow will run
-'on':
-  #triggers the workflow whenever a push is made to the main branch
+on:
   push:
     branches:
       - main
 
 jobs:
-  #this workfloe has only one job
   deploy_to_production:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # this install the dependencies specified in your package.json file into the current workflow
-      - name: install dependencies
-        # navigates to your functions folder and install the dependencies
+
+      - name: Set up Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Install dependencies
         run: npm install
-        # If your firebase cloud functions project uses firebase-admin 
-        # you need to create a config file used to initialize your project
-        # the below task creates a config.json file in your functions directory
-      - name: create config json
+
+      - name: Create config json
         uses: jsdaniell/create-json@1.1.2
         id: create-config-json
         with:
           name: 'config.json'
           json: '{"type": "${{ secrets.TYPE }}","auth_uri": "${{ secrets.AUTH_URI }}","auth_provider_x509_cert_url": "${{ secrets.AUTH_PROVIDER_X509_CERT_URL }}","private_key_id": "${{ secrets.PRIVATE_KEY_ID }}","project_id": "${{ secrets.PROJECT_ID }}","private_key": "${{ secrets.PRIVATE_KEY }}","token_uri": "${{ secrets.TOKEN_URI }}", "client_email": "${{ secrets.CLIENT_EMAIL }}","client_x509_cert_url": "${{ secrets.CLIENT_X509_CERT_URL }}","client_id": "${{ secrets.CLIENT_ID }}"}'
-        # create the json file that holds your confidential environment variables
-      - name: create env json
+
+      - name: Create env json
         uses: jsdaniell/create-json@1.1.2
         id: create-env-json
         with:
           name: 'env.json'
-          json: '{"apiKey" : "${{secrets.apiKey}}" }'
-        # the below task clears the previous env data
+          json: '{"apiKey": "${{ secrets.apiKey }}"}'
 
       - name: Set Firebase project
         run: firebase use --add file-ground
-      - name: clear env configs
+
+      - name: Clear env configs
         uses: w9jds/firebase-action@master
         with:
           args: functions:config:unset env
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        # store the env data 
-      - name: set env configs
+
+      - name: Set env configs
         uses: w9jds/firebase-action@master
         with:
-          args: functions:config:set env=\"$(cat env.json)\"
+          args: functions:config:set env="$(cat env.json)"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        # The below task uses the w9jds/firebase-action@master action with the appropriate argument 
-        # to deploy your firebase cloud functions.
-      - name: deploy to production
+
+      - name: Deploy to production
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only functions
