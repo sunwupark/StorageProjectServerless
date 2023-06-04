@@ -27,13 +27,12 @@ jobs:
         npm install
 
     - name: Create JavaScript file
-      run: echo '${{ secrets.FIREBASE_CONFIG }}' > script.js
+      run: echo '${{ secrets.FIREBASE_CONFIG }}' > firebaseConfig.js
       env:
         FIREBASE_CONFIG: ${{ secrets.FIREBASECONFIG }}
 
     - name: Show file content
-      run: cat script.js
-
+      run: cat firebaseConfig.js
 
     # Deploying the functions to firebase
     - name:  Deploy to Firebase
