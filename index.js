@@ -15,7 +15,7 @@ export const generateThumbnailFunction = storage
 export const setThumbnailDbFunction = storage
   .object()
   .onFinalize(setThumbnailDb);
-//Delete storage also
-export const backupDeletedArticleFunction = database
+
+  export const backupDeletedArticleFunction = database
   .ref("/grounds/{rowId}")
   .onDelete(backupDeletedArticle);
