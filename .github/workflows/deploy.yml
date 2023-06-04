@@ -23,8 +23,8 @@ jobs:
 
       - name: Set Firebase project
         run: |
-          echo ${{ secrets.FIREBASE_PROJECT_ID }} | firebase use --add --token "${{ secrets.FIREBASE_TOKEN }}"
+          firebase use ${{ secrets.FIREBASE_PROJECT_ID }} --alias my-firebase-project --token "${{ secrets.FIREBASE_TOKEN }}"
 
       - name: Deploy to Firebase
         run: |
-          firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}"
+          firebase deploy --project my-firebase-project --token "${{ secrets.FIREBASE_TOKEN }}"
