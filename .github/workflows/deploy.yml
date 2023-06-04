@@ -36,9 +36,6 @@ jobs:
           name: 'env.json'
           json: '{"apiKey": "${{ secrets.apiKey }}"}'
 
-      - name: Set Firebase project
-        run: firebase use --add file-ground
-
       - name: Clear env configs
         uses: w9jds/firebase-action@master
         with:
