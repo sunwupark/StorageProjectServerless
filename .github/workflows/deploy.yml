@@ -37,7 +37,7 @@ jobs:
         echo "MESSAGINGSENDERID=${{ secrets.MESSAGINGSENDERID }}" >> .env
         echo "APPID=${{ secrets.APPID }}" >> .env
         echo "MEASUREMENTID=${{ secrets.MEASUREMENTID }}" >> .env
-
+    #test
     # Deploying the functions to firebase
     - name:  Deploy to Firebase
       uses: w9jds/firebase-action@master
